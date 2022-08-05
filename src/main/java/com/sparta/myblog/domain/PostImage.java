@@ -1,4 +1,4 @@
 package com.sparta.myblog.domain;
 
-public class Board {
+public class PostImage {
 }
