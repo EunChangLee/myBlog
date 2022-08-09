@@ -1,6 +1,6 @@
 package com.sparta.myblog.controller.ms;
 
-import com.sparta.myblog.domain.Post;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,6 +1,6 @@
 package com.sparta.myblog.security;
 
-import com.sparta.myblog.domain.PostUser;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

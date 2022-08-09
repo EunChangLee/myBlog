@@ -4,10 +4,14 @@ import com.sparta.myblog.domain.ec.Post;
 import com.sparta.myblog.dto.ec.PostDto;
 import com.sparta.myblog.dto.ec.ResponsePostDto;
 import com.sparta.myblog.dto.ec.ResponsePostListDto;
+import com.sparta.myblog.security.TokenProvider;
 import com.sparta.myblog.service.ec.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -15,8 +19,15 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping("/post/{userId}")
-    public Post createPost(@PathVariable Long userId, @RequestBody PostDto dto){
+    private final TokenProvider tokenProvider;
+
+    @PostMapping("/post")
+    public Post createPost(ServletRequest servletRequest, @RequestBody PostDto dto){
+
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        System.out.println("로그인한 아이디 값 :" + authentication.getName());
 
         return postService.createPost(dto);
     }

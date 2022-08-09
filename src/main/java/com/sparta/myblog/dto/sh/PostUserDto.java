@@ -1,6 +1,7 @@
 package com.sparta.myblog.dto.sh;
 
-import com.sparta.myblog.domain.PostUser;
+
+import com.sparta.myblog.domain.ec.PostUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

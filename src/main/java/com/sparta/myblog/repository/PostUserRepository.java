@@ -1,6 +1,7 @@
 package com.sparta.myblog.repository;
 
-import com.sparta.myblog.domain.PostUser;
+
+import com.sparta.myblog.domain.ec.PostUser;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

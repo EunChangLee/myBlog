@@ -1,7 +1,8 @@
 package com.sparta.myblog.service.sh;
 
-import com.sparta.myblog.domain.PostUser;
+
 import com.sparta.myblog.domain.UserDetailsImpl;
+import com.sparta.myblog.domain.ec.PostUser;
 import com.sparta.myblog.repository.PostUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

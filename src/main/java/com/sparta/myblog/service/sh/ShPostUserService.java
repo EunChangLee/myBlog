@@ -1,6 +1,7 @@
 package com.sparta.myblog.service.sh;
 
-import com.sparta.myblog.domain.PostUser;
+
+import com.sparta.myblog.domain.ec.PostUser;
 import com.sparta.myblog.dto.sh.PostUserDto;
 import com.sparta.myblog.dto.sh.ResponseDto;
 import com.sparta.myblog.repository.PostUserRepository;
