@@ -2,11 +2,13 @@ package com.sparta.myblog.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +30,10 @@ public class PostUser extends Timestamped {
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+
+    public PostUser(String username) {
+        this.username = username;
+    }
 
 
 }
