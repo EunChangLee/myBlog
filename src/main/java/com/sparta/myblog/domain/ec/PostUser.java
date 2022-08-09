@@ -1,13 +1,17 @@
-package com.sparta.myblog.domain;
+package com.sparta.myblog.domain.ec;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.myblog.domain.Timestamped;
+import com.sparta.myblog.dto.ec.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,5 +33,15 @@ public class PostUser extends Timestamped {
     @Column(nullable = false)
     private String password;
 
+    public void update(UserDto dto){
+        this.username = dto.getUsername();
+        this.nickname = dto.getNickname();
+        this.password = dto.getPassword();
+    }
 
+    public PostUser(UserDto dto){
+        username = dto.getUsername();
+        nickname = dto.getNickname();
+        password = dto.getPassword();
+    }
 }
