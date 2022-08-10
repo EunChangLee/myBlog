@@ -81,6 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/sh/login").permitAll()
                 .antMatchers("/api/sh/signup").permitAll()
+                .antMatchers("/comment").permitAll()
+                //TODO : 인증이 필요없는걸 추가.
 
 
                 .anyRequest().authenticated()

@@ -23,7 +23,6 @@ public class PostController {
 
     @PostMapping("/post")
     public Post createPost(ServletRequest servletRequest, @RequestBody PostDto dto){
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String bearerToken = httpServletRequest.getHeader("Authorization");
         Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
