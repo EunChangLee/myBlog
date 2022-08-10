@@ -35,14 +35,20 @@ public class Reply extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Comment comment;
 
-//    @JoinColumn(name = "user_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private PostUser postUser;
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PostUser postUser;
 
 
     public Reply(Comment comment, ReplyDto dto){
         this.content = dto.getContent();
         this.comment = comment;
+    }
+
+    public Reply(Comment comment, ReplyDto dto, PostUser postUser){
+        this.content = dto.getContent();
+        this.comment = comment;
+        this.postUser = postUser;
     }
 
     public void update(ReplyDto dto){

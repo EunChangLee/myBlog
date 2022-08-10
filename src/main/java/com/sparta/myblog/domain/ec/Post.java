@@ -42,15 +42,21 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>(); // 게시물 댓글 목록
 
-//    @JoinColumn(name = "user_id")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private PostUser postUser; // 회원 정보
+    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PostUser postUser; // 회원 정보
+
+    public Post(PostDto dto, PostUser user){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.likeCount = 0;
+        this.postUser = user;
+    }
 
     public Post(PostDto dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.likeCount = 0;
-        //this.postUser = user;
     }
 
     public void update(PostDto dto){

@@ -1,7 +1,7 @@
-package com.sparta.myblog.dto.ec;
+package com.sparta.myblog.dto.sh;
 
 import com.sparta.myblog.domain.ec.Comment;
-import com.sparta.myblog.domain.ec.PostUser;
+import com.sparta.myblog.domain.ec.Post;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,22 +9,25 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ResponseCommentDto {
+public class ResponseShCommentDto {
     private Long id;
+    private String username;
     private String content;
-    private String postUser;
-    private int commentLike;
+    private int likeCount;
+    private int replyCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
 
-
-    public ResponseCommentDto(Comment comment) {
+    public ResponseShCommentDto(Comment comment, int replyCount) {
         this.id = comment.getCommentId();
+        this.username = comment.getPostUser().getUsername();
         this.content = comment.getContent();
-        this.postUser = comment.getPostUser().getUsername();
-        this.commentLike = comment.getLikeCount();
+        this.likeCount = comment.getLikeCount();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
+        this.replyCount = replyCount;
     }
+
+
 }

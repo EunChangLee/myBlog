@@ -33,19 +33,20 @@ public class Comment extends Timestamped {
     @OneToMany(mappedBy = "comment", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Reply> replies = new ArrayList<>();
 
-//    @JoinColumn(name = "user_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private PostUser postUser; // 회원 정보
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PostUser postUser; // 회원 정보
 
     @JsonIgnore
     @JoinColumn(name = "post_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Post post; // 회원 정보
+    private Post post;
 
-    public Comment(Post post, CommentDto dto){
+    public Comment(Post post, CommentDto dto, PostUser postUser){
         this.content = dto.getContent();
         this.likeCount = 0;
         this.post = post;
+        this.postUser = postUser;
     }
     public Comment(CommentDto dto){
         this.content = dto.getContent();
