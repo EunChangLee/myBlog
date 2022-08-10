@@ -71,6 +71,35 @@ public class ShPostService {
         return responseShPostDto;
     }
 
+    @Transactional
+    public ResponseShPostDto likeCancelPost(Long id, String username) {
+        Post post = shPostRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
+
+        PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
+        );
+
+        List<Comment> listComment = commentRepository.findAllByPost(post);
+
+        int commentCount = listComment.size();
+        int likeCount = post.getLikeCount();
+        likeCount--;
+        post.setLikeCount(likeCount);
+        Post updatePost = shPostRepository.save(post);
+
+        postLikeRepository.deleteByPostAndPostUser(post, postUser);
+
+        ResponseShPostDto responseShPostDto = new ResponseShPostDto(updatePost, commentCount);
+
+        return responseShPostDto;
+
+    }
+
+
+
+
     public  List<ResponseShPostDto> findAllPost() {
         List<Post> postList = shPostRepository.findAll();
         List<ResponseShPostDto> responseShPostDtoList = new ArrayList<>();

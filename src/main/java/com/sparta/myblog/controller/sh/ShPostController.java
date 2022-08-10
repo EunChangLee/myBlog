@@ -48,6 +48,17 @@ public class ShPostController {
         return ResponseEntity.ok(shPostService.likePost(id, username));
     }
 
+    // 게시글 좋아요 취소
+    @PostMapping("/LikeCancelPost/{id}")
+    public ResponseEntity<ResponseShPostDto> likeCancelPost(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(shPostService.likeCancelPost(id, username));
+    }
+
     // 게시글 전체 조회
     @GetMapping("/findAllPost")
     public ResponseEntity<List<ResponseShPostDto>> findAllPost(){

@@ -1,6 +1,7 @@
 package com.sparta.myblog.controller.sh;
 
 import com.sparta.myblog.dto.ec.*;
+import com.sparta.myblog.dto.sh.ResponseShCommentDto;
 import com.sparta.myblog.dto.sh.ResponseShReplyDto;
 import com.sparta.myblog.security.TokenProvider;
 import com.sparta.myblog.service.sh.ShReplyService;
@@ -22,6 +23,7 @@ public class ShReplyController {
 
     private final ShReplyService shReplyService;
 
+    // 대댓글 저장
     @PostMapping("/SaveReply/{commentId}")
     public ResponseEntity<ResponseReplyDto> saveReply(@PathVariable Long commentId, @RequestBody ReplyDto replyDto, ServletRequest servletRequest){
 
@@ -35,11 +37,25 @@ public class ShReplyController {
         return ResponseEntity.ok(shReplyService.saveComment(replyDto, commentId, username));
     }
 
+    // 대댓글 좋아요
     @PostMapping("/LikeReply/{replyId}")
     public ResponseEntity<ResponseShReplyDto> likePost(@PathVariable Long replyId) {
         return ResponseEntity.ok(shReplyService.likeReply(replyId));
     }
 
+    // 대댓글 좋아요 취소
+    @PostMapping("/LikeCancelReply/{id}")
+    public ResponseEntity<ResponseShReplyDto> likeCancelReply(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(shReplyService.likeCancelReply(id));
+    }
+
+
+    // 내가쓴 대댓글 찾기
     @PostMapping("/findAllUserReply")
     public ResponseEntity<List<ResponseShReplyDto>> findAllUserReply(ServletRequest servletRequest) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;

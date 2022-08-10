@@ -4,9 +4,7 @@ import com.sparta.myblog.domain.ec.Comment;
 import com.sparta.myblog.dto.ec.CommentDto;
 import com.sparta.myblog.dto.ec.ResponseCommentDto;
 import com.sparta.myblog.dto.ec.ResponseCommentListDto;
-import com.sparta.myblog.dto.sh.ResponseShCommentDto;
-import com.sparta.myblog.dto.sh.ResponseShCommentListDto;
-import com.sparta.myblog.dto.sh.ResponseShPostDto;
+import com.sparta.myblog.dto.sh.*;
 import com.sparta.myblog.security.TokenProvider;
 import com.sparta.myblog.service.sh.ShCommentService;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +39,24 @@ public class ShCommentController {
 
     // 댓글 좋아요
     @PostMapping("/LikeComment/{commentId}")
-    public ResponseEntity<ResponseShCommentDto> likePost(@PathVariable Long commentId) {
-        return ResponseEntity.ok(shCommentService.likeComment(commentId));
+    public ResponseEntity<ResponseShCommentDto> likePost(@PathVariable Long commentId, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(shCommentService.likeComment(commentId, username));
+    }
+
+    // 댓글 좋아요 취소
+    @PostMapping("/LikeCancelComment/{id}")
+    public ResponseEntity<ResponseShCommentDto> likeCancelComment(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(shCommentService.likeCancelComment(id, username));
     }
 
     // 댓글 전체조회
@@ -59,6 +73,17 @@ public class ShCommentController {
         Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
         String username = authentication.getName();
         return   ResponseEntity.ok(shCommentService.findAllUserComment(username));
+    }
+
+    // 사용자가 좋아요 누른 댓글
+    @PostMapping("/findAllMyCommentLike")
+    public ResponseEntity<List<CommentLikeDto>> findAllMyPostLike(ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        return   ResponseEntity.ok(shCommentService.findAllMyCommentLike(username));
     }
 
 }

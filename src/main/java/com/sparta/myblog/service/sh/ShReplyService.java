@@ -64,6 +64,24 @@ public class ShReplyService {
         return responseShReplyDto;
     }
 
+    @Transactional
+    public ResponseShReplyDto likeCancelReply(Long replyId) {
+        Reply reply = replyRepository.findById(replyId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 대댓글 입니다.")
+        );
+
+        int likeCount = reply.getLikeCount();
+        likeCount--;
+        reply.setLikeCount(likeCount);
+
+        reply = replyRepository.save(reply);
+
+        ResponseShReplyDto responseShReplyDto = new ResponseShReplyDto(reply);
+
+        return responseShReplyDto;
+
+    }
+
 
     public List<ResponseShReplyDto> findAllUserReply(String username) {
         PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(

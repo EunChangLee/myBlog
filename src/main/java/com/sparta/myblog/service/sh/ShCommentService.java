@@ -4,6 +4,7 @@ import com.sparta.myblog.domain.ec.*;
 import com.sparta.myblog.dto.ec.CommentDto;
 import com.sparta.myblog.dto.ec.ResponseCommentDto;
 import com.sparta.myblog.dto.sh.*;
+import com.sparta.myblog.repository.CommentLikeRepository;
 import com.sparta.myblog.repository.PostUserRepository;
 import com.sparta.myblog.repository.ec.CommentRepository;
 import com.sparta.myblog.repository.ec.PostRepository;
@@ -25,6 +26,7 @@ public class ShCommentService {
 
     private final PostUserRepository postUserRepository;
     private final ReplyRepository replyRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public ResponseCommentDto saveComment(CommentDto commentDto, Long postId, String username) {
@@ -45,10 +47,14 @@ public class ShCommentService {
     }
 
     @Transactional
-    public ResponseShCommentDto likeComment(Long commentId) {
+    public ResponseShCommentDto likeComment(Long commentId, String username) {
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글 입니다.")
+        );
+
+        PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
         );
 
         List<Reply> listReply = replyRepository.findAllByComment(comment);
@@ -60,10 +66,45 @@ public class ShCommentService {
 
         Comment updateComment = commentRepository.save(comment);
 
+        CommentLike commentLike = new CommentLike(comment, postUser);
+        if(commentLikeRepository.findByComment(comment) == null){
+            commentLikeRepository.save(commentLike);
+        }
+
         ResponseShCommentDto responseCommentDto = new ResponseShCommentDto(comment, replyCount);
 
         return responseCommentDto;
     }
+
+    @Transactional
+    public ResponseShCommentDto likeCancelComment(Long commentId, String username) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글 입니다.")
+        );
+
+        PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
+        );
+
+        List<Reply> listReply = replyRepository.findAllByComment(comment);
+
+
+
+        int replyCount = listReply.size();
+        int likeCount = comment.getLikeCount();
+        likeCount--;
+        comment.setLikeCount(likeCount);
+
+        Comment updateComment = commentRepository.save(comment);
+
+        commentLikeRepository.deleteByCommentAndPostUser(comment, postUser);
+
+        ResponseShCommentDto responseCommentDto = new ResponseShCommentDto(comment, replyCount);
+
+        return responseCommentDto;
+
+    }
+
 
 
     // 다시 해야함
@@ -110,6 +151,23 @@ public class ShCommentService {
         }
 
         return responseShCommentDtoList;
+
+    }
+
+
+    public List<CommentLikeDto> findAllMyCommentLike(String username) {
+        PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
+        );
+
+        List<CommentLike> commentLikems = commentLikeRepository.findAllByPostUser(postUser);
+        List<CommentLikeDto> commentLikeDtos = new ArrayList<>();
+
+        for(CommentLike c : commentLikems) {
+            commentLikeDtos.add(new CommentLikeDto(c));
+        }
+
+        return commentLikeDtos;
 
     }
 
