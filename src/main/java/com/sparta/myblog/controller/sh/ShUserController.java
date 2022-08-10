@@ -26,7 +26,6 @@ import javax.validation.Valid;
 public class ShUserController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
     private final ShPostUserService shPostUserService;
 
     public ShUserController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder
