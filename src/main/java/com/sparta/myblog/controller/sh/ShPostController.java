@@ -3,7 +3,6 @@ package com.sparta.myblog.controller.sh;
 import com.sparta.myblog.domain.ec.Post;
 import com.sparta.myblog.dto.ec.PostDto;
 import com.sparta.myblog.dto.sh.PostLikeDto;
-import com.sparta.myblog.dto.sh.ResponseShCommentListDto;
 import com.sparta.myblog.dto.sh.ResponseShPostDto;
 import com.sparta.myblog.security.TokenProvider;
 import com.sparta.myblog.service.sh.ShPostService;
@@ -65,6 +64,12 @@ public class ShPostController {
         return  ResponseEntity.ok(shPostService.findAllPost());
     }
 
+    @GetMapping("/findOnePost/{id}")
+    public ResponseEntity<ResponseShPostDto> findOnePost(@PathVariable Long id){
+        return  ResponseEntity.ok(shPostService.findOnePost(id));
+    }
+
+
     // 사용자가 쓴 게시글
     @PostMapping("/findAllUserPost")
     public ResponseEntity<List<ResponseShPostDto>> findAllUserPost(ServletRequest servletRequest) {
@@ -87,6 +92,18 @@ public class ShPostController {
         return   ResponseEntity.ok(shPostService.findAllMyPostLike(username));
     }
 
+    // 게시글 삭제
+    @DeleteMapping("/deletePost/{id}")
+    public String deletePost(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        Long result = shPostService.deletePost(id, username);
+
+        return  result + "번 게시물이 삭제되었습니다.";
+    }
 
 
 }

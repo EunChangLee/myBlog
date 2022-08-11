@@ -1,6 +1,7 @@
 package com.sparta.myblog.service.sh;
 
 import com.sparta.myblog.domain.ec.Comment;
+import com.sparta.myblog.domain.ec.Post;
 import com.sparta.myblog.domain.ec.PostUser;
 import com.sparta.myblog.domain.ec.Reply;
 import com.sparta.myblog.dto.ec.ReplyDto;
@@ -98,5 +99,18 @@ public class ShReplyService {
 
         return responseShReplyDtoList;
 
+    }
+
+    public Long deleteReply(Long id, String username){
+        Reply reply = replyRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("대댓글을 찾지 못했습니다.")
+        );
+
+        if(reply.getPostUser().getUsername().equals(username)){
+            replyRepository.deleteById(id);
+        } else{
+            throw new IllegalArgumentException("대댓글을 쓴 유저가 아닙니다.");
+        }
+        return id;
     }
 }

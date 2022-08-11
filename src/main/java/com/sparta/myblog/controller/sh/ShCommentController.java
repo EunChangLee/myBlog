@@ -86,4 +86,18 @@ public class ShCommentController {
         return   ResponseEntity.ok(shCommentService.findAllMyCommentLike(username));
     }
 
+    // 댓글 삭제
+    @DeleteMapping("/deleteComment/{id}")
+    public String deleteComment(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        Long result = shCommentService.deleteComment(id, username);
+
+        return  result + "번 댓글이 삭제되었습니다.";
+    }
+
+
 }

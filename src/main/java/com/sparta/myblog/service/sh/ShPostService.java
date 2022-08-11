@@ -118,6 +118,17 @@ public class ShPostService {
 
     }
 
+    public ResponseShPostDto findOnePost(Long id) {
+        Post post = shPostRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
+
+        List<Comment> listComment = commentRepository.findAllByPost(post);
+
+        ResponseShPostDto responseShPostDto = new ResponseShPostDto(post,listComment.size());
+        return responseShPostDto;
+    }
+
     public List<ResponseShPostDto> findAllUserPost(String username) {
         PostUser postUser = postUserRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
@@ -150,6 +161,20 @@ public class ShPostService {
 
         return postLikeDtos;
 
+    }
+
+
+    public Long deletePost(Long id, String username){
+         Post post = shPostRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("게시글을 찾지 못했습니다.")
+        );
+
+        if(post.getPostUser().getUsername().equals(username)){
+            shPostRepository.deleteById(id);
+        } else{
+            throw new IllegalArgumentException("게시글을 쓴 유저가 아닙니다.");
+        }
+        return id;
     }
 
 

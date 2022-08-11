@@ -64,4 +64,17 @@ public class ShReplyController {
         String username = authentication.getName();
         return   ResponseEntity.ok(shReplyService.findAllUserReply(username));
     }
+
+    // 대댓글 삭제
+    @DeleteMapping("/deleteReply/{id}")
+    public String deleteReply(@PathVariable Long id, ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
+        String username = authentication.getName();
+
+        Long result = shReplyService.deleteReply(id, username);
+
+        return  result + "번 게시물이 삭제되었습니다.";
+    }
 }

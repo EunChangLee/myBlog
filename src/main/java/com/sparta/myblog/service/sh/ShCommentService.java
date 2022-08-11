@@ -107,7 +107,6 @@ public class ShCommentService {
 
 
 
-    // 다시 해야함
     public  List<ResponseShCommentListDto> findAllComment() {
         List<Comment> commentList = commentRepository.findAll();
         List<ResponseShCommentListDto> responseShCommentListDto = new ArrayList<>();
@@ -127,7 +126,9 @@ public class ShCommentService {
 
             responseShCommentListDto.add(new ResponseShCommentListDto(comment, responseShReplyDtoList));
 
-            responseShCommentListDto.add(new ResponseShCommentListDto(comment));
+            responseShReplyDtoList = new ArrayList<>();
+
+            //responseShCommentListDto.add(new ResponseShCommentListDto(comment));
         }
 
 
@@ -170,6 +171,20 @@ public class ShCommentService {
         return commentLikeDtos;
 
     }
+
+    public Long deleteComment(Long commentId, String username){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글 입니다.")
+        );
+
+        if(comment.getPostUser().getUsername().equals(username)){
+            commentRepository.deleteById(commentId);
+        } else{
+            throw new IllegalArgumentException("댓글을 쓴 유저가 아닙니다.");
+        }
+        return commentId;
+    }
+
 
 
 

@@ -84,6 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/api/sh/findAllPost").permitAll()
                 .antMatchers("/api/sh/findAllComment").permitAll()
+                .antMatchers("/api/sh/findOnePost/{id}").permitAll()
 
                 .antMatchers("/comment").permitAll()
                 //TODO : 인증이 필요없는걸 추가.
