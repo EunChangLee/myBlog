@@ -75,6 +75,6 @@ public class ShReplyController {
 
         Long result = shReplyService.deleteReply(id, username);
 
-        return  result + "번 게시물이 삭제되었습니다.";
+        return  result + "번 대댓글이 삭제되었습니다.";
     }
 }

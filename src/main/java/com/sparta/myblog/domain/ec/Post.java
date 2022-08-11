@@ -50,6 +50,7 @@ public class Post extends Timestamped {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.likeCount = 0;
+        this.image =dto.getImage();
         this.postUser = user;
     }
 
