@@ -40,21 +40,18 @@ public class TokenProvider implements InitializingBean {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
 
-        System.out.println("TokenProvider TokenProvider");
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     @Override
     public void afterPropertiesSet() {
-        System.out.println("TokenProvider afterPropertiesSet");
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     //토큰 생성
     public String createToken(Authentication authentication) {
-        System.out.println("TokenProvider createToken");
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -71,7 +68,6 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String RefreshToken() {
-        System.out.println("TokenProvider RefreshToken");
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds * 30);
         return Jwts.builder()
@@ -82,7 +78,6 @@ public class TokenProvider implements InitializingBean {
 
     // 토큰을 이용한 Authentication정보 얻기
     public Authentication getAuthentication(String token) {
-        System.out.println("TokenProvider getAuthentication");
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(key)
@@ -104,7 +99,6 @@ public class TokenProvider implements InitializingBean {
 
     // 토큰의 검증
     public boolean validateToken(String token) {
-        System.out.println("TokenProvider validateToken");
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;

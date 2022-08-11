@@ -24,7 +24,7 @@ public class PostUser extends Timestamped {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)

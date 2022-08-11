@@ -20,7 +20,7 @@ public class SecurityUtil {
     // JwtFilter에 doFilter메소드에서 Authentication객체를 저장함 그래서 그 부분을 여기서 getContext로 꺼내올 수 있음
     public static Optional<String> getCurrentUsername() {
 
-        System.out.println("SecurityUtil getCurrentUsername");
+
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
@@ -28,15 +28,12 @@ public class SecurityUtil {
             return Optional.empty();
         }
 
-        System.out.println("여기는 뭐가 나오나?" + authentication.getPrincipal());
 
         String userName = null;
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-            System.out.println("여기는 뭐가 나오나?111" + springSecurityUser.getUsername());
             userName = springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
-            System.out.println("여기는 뭐가 나오나?222" + (String) authentication.getPrincipal());
             userName = (String) authentication.getPrincipal();
         }
 

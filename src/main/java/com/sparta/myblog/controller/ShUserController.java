@@ -79,22 +79,5 @@ public class ShUserController {
     }
 
 
-    // 토큰으로 아이디 가져오기
-    @PostMapping("/test123")
-    public String test(ServletRequest servletRequest){
-        System.out.println("이거나오고?");
-
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String bearerToken = httpServletRequest.getHeader("Authorization");
-        System.out.println("테스트세트스 :" +  bearerToken.substring(7));
-
-        Authentication authentication= tokenProvider.getAuthentication(bearerToken.substring(7));
-        System.out.println("이건 진짜다 :" + authentication.getName().toString());
-
-
-        return "종료";
-
-    }
-
 
 }

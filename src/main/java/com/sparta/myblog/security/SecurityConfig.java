@@ -43,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        System.out.println("SecurityConfig configure WebSecurity");
         web.ignoring()
                 .antMatchers(
                         "/h2-console/**"
@@ -55,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("SecurityConfig configure HttpSecurity");
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()

@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
-        System.out.println("CustomUserDetailsService loadUserByUsername");
         Optional<PostUser> postUser = postUserRepository.findByUsername(username);
 
         return postUser
