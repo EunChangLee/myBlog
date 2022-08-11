@@ -1,6 +1,5 @@
 package com.sparta.myblog.domain;
 
-import com.sparta.myblog.domain.ec.PostUser;
 import com.sparta.myblog.shared.Authority;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

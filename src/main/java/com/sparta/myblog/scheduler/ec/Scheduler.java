@@ -1,7 +1,7 @@
 package com.sparta.myblog.scheduler.ec;
 
-import com.sparta.myblog.domain.ec.Post;
-import com.sparta.myblog.repository.ec.PostRepository;
+import com.sparta.myblog.domain.Post;
+import com.sparta.myblog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
